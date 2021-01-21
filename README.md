@@ -1,37 +1,13 @@
 
 [![Build Status](https://travis-ci.com/felipegutierrez/explore-akka-grpc-sample-kubernetes.svg?branch=master)](https://travis-ci.com/felipegutierrez/explore-akka-grpc-sample-kubernetes)
 
-
 # Akka gRPC Kubernetes
 
-This is an example of an [Akka HTTP](https://doc.akka.io/docs/akka-http/current) application communicating with an [Akka gRPC](https://developer.lightbend.com/docs/akka-grpc/current/) application inside of Kubernetes.
+This is an example of an [Akka HTTP](https://doc.akka.io/docs/akka-http/current) application communicating with an [Akka gRPC](https://developer.lightbend.com/docs/akka-grpc/current/) application inside of Kubernetes. The Akka HTTP application discovers the Akka gRPC application using [Akka Discovery](https://developer.lightbend.com/docs/akka-management/current/discovery.html). It uses the `akka-dns` mechanism which relies on the `SRV` records created by kubernetes.
 
-This example does not show Akka Cluster. If you are interested in Akka Cluster, see for the 'Cluster' examples (for [Scala](https://developer.lightbend.com/start/?group=akka&project=akka-samples-cluster-scala) or [Java](https://developer.lightbend.com/start/?group=akka&project=akka-samples-cluster-java)), 'Akka Cluster with docker-compose' (for [Scala](https://developer.lightbend.com/start/?group=akka&project=akka-sample-cluster-docker-compose-scala) or [Java](https://developer.lightbend.com/start/?group=akka&project=akka-sample-cluster-docker-compose-java)) or 'Akka Cluster on Kubernetes (for [Java](https://developer.lightbend.com/start/?group=akka&project=akka-sample-cluster-kubernetes-java))
+## Docker images
 
-The Akka HTTP application discovers the Akka gRPC application using [Akka Discovery](https://developer.lightbend.com/docs/akka-management/current/discovery.html).
-It uses the `akka-dns` mechanism which relies on the `SRV` records created by kubernetes.
-
-All the technologies used in this example are open source.
-
-## Other approaches
-
-This project uses sbt and the Scala language.
-
-If you are using Java and sbt you can use exactly the same approach.
-
-If you are using another build tool, such as Maven or Gradle, the code would
-still be the same, but you would have to build the Docker image and deploy it to Kubernetes yourself.
-
-## Usage
-
-### Prerequisites
-
-Install the following:
-
-* [Docker](https://docs.docker.com/install/)
-* [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-* [Minikube](https://github.com/kubernetes/minikube)
-* [Sbt](https://www.scala-sbt.org/)
+The docker images [felipeogutierrez/grpcservice](https://hub.docker.com/repository/docker/felipeogutierrez/grpcservice) and [felipeogutierrez/httptogrpc](https://hub.docker.com/repository/docker/felipeogutierrez/httptogrpc) are available at Docker Hub. They are push automatically by Travis-CI when new code is committed to github.
 
 ### Running
 
