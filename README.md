@@ -1,3 +1,7 @@
+
+[![Build Status](https://travis-ci.com/felipegutierrez/explore-akka-grpc-sample-kubernetes.svg?branch=master)](https://travis-ci.com/felipegutierrez/explore-akka-grpc-sample-kubernetes)
+
+
 # Akka gRPC Kubernetes
 
 This is an example of an [Akka HTTP](https://doc.akka.io/docs/akka-http/current) application communicating with an [Akka gRPC](https://developer.lightbend.com/docs/akka-grpc/current/) application inside of Kubernetes.
