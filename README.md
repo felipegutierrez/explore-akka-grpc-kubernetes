@@ -1,5 +1,5 @@
 
-[![Build Status](https://travis-ci.com/felipegutierrez/explore-akka-grpc-sample-kubernetes.svg?branch=master)](https://travis-ci.com/felipegutierrez/explore-akka-grpc-sample-kubernetes)
+[![Build Status](https://travis-ci.com/felipegutierrez/explore-akka-grpc-kubernetes.svg?branch=master)](https://travis-ci.com/felipegutierrez/explore-akka-grpc-kubernetes)
 
 # Akka gRPC Kubernetes
 
