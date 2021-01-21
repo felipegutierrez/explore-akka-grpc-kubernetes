@@ -31,7 +31,18 @@ Install the following:
 
 ### Running
 
-Once minikube is running and ingress enabled with `minikube addons enable ingress`, the two applications can be deployed using:
+Create the docker images `httptogrpc` and `grpcservice` of this project and publish them locally:
+```
+sbt docker:stage
+sbt docker:publishLocal
+docker images
+```
+Once minikube is running and ingress enabled with:
+```
+minikube start --cpus 4 --memory 8192
+minikube addons enable ingress
+```
+The two applications can be deployed using:
 
 `kubectl apply -f kubernetes/grpcservice.yml`
 

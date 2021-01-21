@@ -20,7 +20,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: grpcservice
-          image: "grpcservice:0.1.0-SNAPSHOT"
+          image: "felipeogutierrez/grpcservice:1.0"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
