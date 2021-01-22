@@ -82,6 +82,12 @@ $ curl -v --header 'Host: superservice.com' $(minikube ip)/hello/donkey
 * Connection #0 to host 192.168.99.100 left intact
 Hello, donkey%
 ```
+Alternatively, you can use the port-forward to redirect the `service/httptogrpc` to the browser on port 8080 and access from [http://127.0.0.1:8080/hello/donkey](http://127.0.0.1:8080/hello/donkey).
+```
+$ kubectl port-forward service/httptogrpc 8080
+Forwarding from 127.0.0.1:8080 -> 8080
+Forwarding from [::1]:8080 -> 8080
+```
 
 The `Host` header needs to be set as that is how minikube [Ingress](https://github.com/kubernetes/ingress-nginx) routes requests to services.
 
