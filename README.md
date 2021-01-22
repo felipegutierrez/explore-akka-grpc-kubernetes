@@ -82,7 +82,9 @@ Forwarding from 127.0.0.1:8080 -> 8080
 Forwarding from [::1]:8080 -> 8080
 ```
 
-The `Host` header needs to be set as that is how minikube [Ingress](https://github.com/kubernetes/ingress-nginx) routes requests to services.
+### Overview of this project in action
+
+![Screencast of Akka-gRPC running with akka-http on top of minikube](images/akka-grpc-http-k8s.gif)
 
 ### Troubleshooting
 
