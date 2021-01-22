@@ -6,12 +6,11 @@ import akka.grpc.GrpcClientSettings
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
-import akka.stream.{ActorMaterializer, Materializer}
+import akka.stream.Materializer
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
-
 
 object HttpToGrpc {
 
@@ -25,12 +24,12 @@ object HttpToGrpc {
     val client = GreeterServiceClient(settings)
 
     system.scheduler.scheduleAtFixedRate(5.seconds, 5.seconds)(() => {
-        log.info("Scheduled say hello to chris")
-        val response: Future[HelloReply] = client.sayHello(HelloRequest("Christopher"))
-        response.onComplete { r =>
-          log.info("Scheduled say hello response {}", r)
-        }
-      })
+      log.info("Scheduled say hello to chris")
+      val response: Future[HelloReply] = client.sayHello(HelloRequest("Christopher"))
+      response.onComplete { r =>
+        log.info("Scheduled say hello response {}", r)
+      }
+    })
 
     val route =
       path("hello" / Segment) { name =>

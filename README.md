@@ -35,8 +35,8 @@ Verify the deployments:
 ```
 $ kubectl get deployments
 NAME                          DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-grpcservice-v0-1-0-snapshot   1         1         1            1           40s
-httptogrpc-v0-1-0-snapshot    1         1         1            1           40s
+grpcservice                   1         1         1            1           40s
+httptogrpc                    1         1         1            1           40s
 
 ```
 

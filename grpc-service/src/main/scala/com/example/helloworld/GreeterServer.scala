@@ -1,12 +1,11 @@
 package com.example.helloworld
 
 import akka.actor.ActorSystem
+import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse}
-import akka.http.scaladsl.{Http, HttpConnectionContext}
-import akka.stream.{ActorMaterializer, Materializer}
+import akka.stream.Materializer
 
 import scala.concurrent.{ExecutionContext, Future}
-
 
 object GreeterServer {
 

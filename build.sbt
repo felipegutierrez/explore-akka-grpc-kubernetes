@@ -12,7 +12,7 @@ import NativePackagerHelper._
 
 // Http front end that calls out to a gRPC back end
 lazy val httpToGrpc = (project in file("http-to-grpc"))
-  .enablePlugins(AkkaGrpcPlugin, DockerPlugin, JavaAppPackaging)
+  .enablePlugins(AkkaGrpcPlugin, DockerPlugin, JavaAppPackaging, AshScriptPlugin)
   .settings(
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
@@ -42,7 +42,7 @@ lazy val httpToGrpc = (project in file("http-to-grpc"))
   )
 
 lazy val grpcService = (project in file("grpc-service"))
-  .enablePlugins(AkkaGrpcPlugin, DockerPlugin, JavaAppPackaging)
+  .enablePlugins(AkkaGrpcPlugin, DockerPlugin, JavaAppPackaging, AshScriptPlugin)
   .settings(
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-actor" % akkaVersion,

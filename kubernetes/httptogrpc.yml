@@ -2,20 +2,20 @@
 apiVersion: "apps/v1"
 kind: Deployment
 metadata:
-  name: "httptogrpc-v0-1-0-snapshot"
+  name: "httptogrpc"
   labels:
     appName: httptogrpc
-    appNameVersion: "httptogrpc-v0-1-0-snapshot"
+    appNameVersion: "httptogrpc"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      appNameVersion: "httptogrpc-v0-1-0-snapshot"
+      appNameVersion: "httptogrpc"
   template:
     metadata:
       labels:
         appName: httptogrpc
-        appNameVersion: "httptogrpc-v0-1-0-snapshot"
+        appNameVersion: "httptogrpc"
     spec:
       restartPolicy: Always
       containers:

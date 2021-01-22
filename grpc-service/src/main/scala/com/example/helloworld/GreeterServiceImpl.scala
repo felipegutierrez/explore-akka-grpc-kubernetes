@@ -10,10 +10,8 @@ import akka.stream.scaladsl.MergeHub
 import akka.stream.scaladsl.Sink
 import akka.stream.scaladsl.Source
 
-
 class GreeterServiceImpl(materializer: Materializer, log: LoggingAdapter) extends GreeterService {
-
-
+  
   private implicit val mat: Materializer = materializer
 
   val (inboundHub: Sink[HelloRequest, NotUsed], outboundHub: Source[HelloReply, NotUsed]) =

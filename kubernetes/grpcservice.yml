@@ -2,20 +2,20 @@
 apiVersion: "apps/v1"
 kind: Deployment
 metadata:
-  name: "grpcservice-v0-1-0-snapshot"
+  name: "grpcservice"
   labels:
     appName: grpcservice
-    appNameVersion: "grpcservice-v0-1-0-snapshot"
+    appNameVersion: "grpcservice"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      appNameVersion: "grpcservice-v0-1-0-snapshot"
+      appNameVersion: "grpcservice"
   template:
     metadata:
       labels:
         appName: grpcservice
-        appNameVersion: "grpcservice-v0-1-0-snapshot"
+        appNameVersion: "grpcservice"
     spec:
       restartPolicy: Always
       containers:
