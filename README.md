@@ -3,11 +3,7 @@
 
 # Akka gRPC Kubernetes
 
-This is an example of an [Akka HTTP](https://doc.akka.io/docs/akka-http/current) application communicating with an [Akka gRPC](https://developer.lightbend.com/docs/akka-grpc/current/) application inside of Kubernetes. The Akka HTTP application discovers the Akka gRPC application using [Akka Discovery](https://developer.lightbend.com/docs/akka-management/current/discovery.html). It uses the `akka-dns` mechanism which relies on the `SRV` records created by kubernetes.
-
-## Docker images
-
-The docker images [felipeogutierrez/grpcservice](https://hub.docker.com/repository/docker/felipeogutierrez/grpcservice) and [felipeogutierrez/httptogrpc](https://hub.docker.com/repository/docker/felipeogutierrez/httptogrpc) are available at Docker Hub. They are push automatically by Travis-CI when new code is committed to github.
+This is an example of an [Akka HTTP](https://doc.akka.io/docs/akka-http/current) application communicating with an [Akka gRPC](https://developer.lightbend.com/docs/akka-grpc/current/) application inside of Kubernetes. The Akka HTTP application discovers the Akka gRPC application using [Akka Discovery](https://developer.lightbend.com/docs/akka-management/current/discovery.html). It uses the `akka-dns` mechanism which relies on the `SRV` records created by kubernetes. The docker images [felipeogutierrez/grpcservice](https://hub.docker.com/repository/docker/felipeogutierrez/grpcservice) and [felipeogutierrez/httptogrpc](https://hub.docker.com/repository/docker/felipeogutierrez/httptogrpc) are available at Docker Hub. They are push automatically by Travis-CI when new code is committed to github.
 
 ### Running
 
@@ -23,15 +19,12 @@ minikube start --cpus 4 --memory 8192
 minikube addons enable ingress
 ```
 The two applications can be deployed using:
-
-`kubectl apply -f kubernetes/grpcservice.yml`
-
-and
-
-`kubectl apply -f kubernetes/httptogrpc.yml`
+```
+kubectl apply -f kubernetes/grpcservice.yml
+kubectl apply -f kubernetes/httptogrpc.yml
+```
 
 Verify the deployments:
-
 ```
 $ kubectl get deployments
 NAME                          DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
