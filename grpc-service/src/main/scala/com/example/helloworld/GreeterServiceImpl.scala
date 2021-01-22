@@ -16,7 +16,9 @@ class GreeterServiceImpl(materializer: Materializer, log: LoggingAdapter) extend
     "John" -> "I killed Java",
     "Christopher" -> "I have created a sample project with akka-grpc to run on top of akka-http and akka-stream with K8S",
     "Felipe" -> "I have enhanced the akka-grpc, akka-http, akka-stream by creating a Docker image and run it on minikube =)",
-    "Bob" -> "I am streaming data from akka-grpc server to client and exposing it on the browser in a stream fashion =)"
+    "Bob" -> "I am streaming data from akka-grpc server to client and exposing it on the browser in a stream fashion =)",
+    "Michael" -> "We are the Jacksons 5",
+    "Oscar" -> "I am Oscar Wilde from England and I have written 'The picture of Dorian Gray'"
   )
 
   private implicit val mat: Materializer = materializer

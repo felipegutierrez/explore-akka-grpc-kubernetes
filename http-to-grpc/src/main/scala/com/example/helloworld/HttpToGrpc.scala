@@ -11,23 +11,13 @@ import akka.stream.Materializer
 import akka.stream.scaladsl.{Flow, Sink, Source}
 
 import scala.concurrent.duration._
-import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Random, Success}
+import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.util.{Failure, Random, Success, Try}
 
 case class SocialPost(owner: String, content: String)
 
 object HttpToGrpc {
 
-  val socialList = List(
-    SocialPost("Martin", " Scala 3 has been announced"),
-    SocialPost("Daniel", "A new Rock the JVM course is open"),
-    SocialPost("Martin", "I killed Java"),
-    SocialPost("Felipe", "I have found a job to work with Scala =)"),
-    SocialPost("Christopher", "I have created a sample project with akka-grpc to run on top of akka-http and akka-stream with K8S"),
-    SocialPost("Felipe", "I have enhanced the akka-grpc, akka-http, akka-stream by creating a Docker image and run it on minikube =)"),
-    SocialPost("Felipe", "I am streaming data from akka-grpc server to client and exposing it on the browser in a stream fashion =)")
-  )
-  val socialFeed = Source(socialList)
   val socialRequests = List(
     HelloRequest("Daniel"),
     HelloRequest("Martin"),
@@ -36,7 +26,10 @@ object HttpToGrpc {
     HelloRequest("Fabio"),
     HelloRequest("Simone"),
     HelloRequest("John"),
-    HelloRequest("Oscar")
+    HelloRequest("Oscar"),
+    HelloRequest("Bob"),
+    HelloRequest("Jordan"),
+    HelloRequest("Michael")
   )
 
   val html =
@@ -77,14 +70,7 @@ object HttpToGrpc {
     val settings = GrpcClientSettings.fromConfig("helloworld.GreeterService")
     val client = GreeterServiceClient(settings)
 
-    //    system.scheduler.scheduleAtFixedRate(5.seconds, 5.seconds)(() => {
-    //      log.info("Scheduled say hello to chris")
-    //      val response: Future[HelloReply] = client.sayHello(HelloRequest("Christopher"))
-    //      response.onComplete { r =>
-    //        log.info("Scheduled say hello response {}", r)
-    //      }
-    //    })
-    val cancelable = system.scheduler.scheduleAtFixedRate(5.seconds, 5.seconds)(() => {
+    system.scheduler.scheduleAtFixedRate(5.seconds, 5.seconds)(() => {
       val helloRequest: HelloRequest = socialRequests(Random.nextInt(socialRequests.size))
       log.info(s"Scheduled say hello to ${helloRequest.name}")
       val response: Future[HelloReply] = client.sayHello(helloRequest)
@@ -93,14 +79,25 @@ object HttpToGrpc {
         log.info(s"Scheduled say hello response: ${helloReply.message}")
       }
     })
-    // cancelable
 
     // dynamic web socket flow to update html without refreshing the page
-    val socialMessages = socialFeed.throttle(1, 5 seconds).initialDelay(2 seconds)
-      .map { socialPost: SocialPost => TextMessage(s"${socialPost.owner} said: ${socialPost.content}") }
+    val dynamicSource = Source(Stream.from(1)).throttle(1, 1 second)
+      .map { _ =>
+        val helloRequest: HelloRequest = socialRequests(Random.nextInt(socialRequests.size))
+        log.info(s"Scheduled say hello to ${helloRequest.name}")
+        val responseClientGrpc: Future[HelloReply] = client.sayHello(helloRequest)
+        val message: Future[Message] = responseClientGrpc.map { helloReply: HelloReply =>
+          log.info(s"Scheduled ${helloRequest.name} say hello response: ${helloReply.message}")
+          TextMessage(s"${helloRequest.name} says: ${helloReply.message}")
+        }
+        Try(Await.result(message, 3 seconds)) match {
+          case Success(value) => value
+          case Failure(exception) => TextMessage(exception.getMessage)
+          case _ => TextMessage("Unknown message")
+        }
+      }
     val socketFlow: Flow[Message, Message, Any] = Flow
-      .fromSinkAndSource(Sink.foreach[Message](println), socialMessages)
-
+      .fromSinkAndSource(Sink.foreach[Message](println), dynamicSource)
 
     val route =
       path("hello" / Segment) { name =>
