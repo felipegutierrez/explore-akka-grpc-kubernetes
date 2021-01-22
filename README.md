@@ -84,3 +84,16 @@ Hello, donkey%
 ```
 
 The `Host` header needs to be set as that is how minikube [Ingress](https://github.com/kubernetes/ingress-nginx) routes requests to services.
+
+### Troubleshooting
+
+```
+docker image rm <IMAGE_ID>
+sbt docker:stage
+sbt docker:publishLocal
+docker login --username=felipeogutierrez
+docker images
+docker push felipeogutierrez/httptogrpc:1.0
+docker push felipeogutierrez/grpcservice:1.0
+```
+
