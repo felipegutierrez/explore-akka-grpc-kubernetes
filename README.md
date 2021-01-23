@@ -1,5 +1,6 @@
 
 [![Build Status](https://travis-ci.com/felipegutierrez/explore-akka-grpc-kubernetes.svg?branch=master)](https://travis-ci.com/felipegutierrez/explore-akka-grpc-kubernetes)
+[![Coverage Status](https://coveralls.io/repos/github/felipegutierrez/explore-akka-grpc-kubernetes/badge.svg)](https://coveralls.io/github/felipegutierrez/explore-akka-grpc-kubernetes)
 
 # Akka gRPC Kubernetes
 

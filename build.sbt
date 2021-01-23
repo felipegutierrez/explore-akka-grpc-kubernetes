@@ -1,6 +1,7 @@
 name := "explore-akka-grpc-sample-kubernetes"
 version := "1.0"
-scalaVersion := "2.13.4"
+scalaVersion := "2.12.7"
+//scalaVersion := "2.13.4" // not available for coveralls plugin
 
 lazy val akkaVersion = "2.6.11"
 lazy val discoveryVersion = "1.0.9"
@@ -28,7 +29,7 @@ lazy val httpToGrpc = (project in file("http-to-grpc"))
 
       "com.lightbend.akka.discovery" %% "akka-discovery-kubernetes-api" % discoveryVersion,
 
-      "ch.qos.logback" % "logback-classic" % "1.2.3"
+      "ch.qos.logback" % "logback-classic" % "1.2.3",
     ),
     dockerExposedPorts := Seq(8080),
     version in Docker := "1.0",
@@ -54,7 +55,7 @@ lazy val grpcService = (project in file("grpc-service"))
       "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
       "com.typesafe.akka" %% "akka-http2-support" % akkaHttpVersion,
 
-      "ch.qos.logback" % "logback-classic" % "1.2.3"
+      "ch.qos.logback" % "logback-classic" % "1.2.3",
     ),
     dockerExposedPorts := Seq(8080),
     version in Docker := "1.0",

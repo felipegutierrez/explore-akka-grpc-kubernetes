@@ -11,7 +11,11 @@ jdk:
 branches:
   only:
     - master
+script:
+  - sbt coverage test
+  - sbt coverageAggregate
 after_success:
+  - sbt coverageReport coveralls
   - sbt ++$TRAVIS_SCALA_VERSION docker:stage
   - sbt ++$TRAVIS_SCALA_VERSION docker:publishLocal
   # Log in to the docker CLI. Log in to docker in a single command line
