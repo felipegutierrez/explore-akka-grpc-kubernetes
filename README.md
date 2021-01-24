@@ -4,6 +4,10 @@
 ![GitHub issues](https://img.shields.io/github/issues-raw/felipegutierrez/explore-akka-grpc-kubernetes)
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/felipegutierrez/explore-akka-grpc-kubernetes)
 
+[felipeogutierrez/grpcservice](https://hub.docker.com/repository/docker/felipeogutierrez/grpcservice) ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/felipeogutierrez/grpcservice)
+
+[felipeogutierrez/httptogrpc](https://hub.docker.com/repository/docker/felipeogutierrez/httptogrpc) ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/felipeogutierrez/httptogrpc)
+
 # Akka gRPC Kubernetes
 
 This is an example of an [Akka HTTP](https://doc.akka.io/docs/akka-http/current) application communicating with an [Akka gRPC](https://developer.lightbend.com/docs/akka-grpc/current/) application inside of Kubernetes. The Akka HTTP application discovers the Akka gRPC application using [Akka Discovery](https://developer.lightbend.com/docs/akka-management/current/discovery.html). It uses the `akka-dns` mechanism which relies on the `SRV` records created by kubernetes. The docker images [felipeogutierrez/grpcservice](https://hub.docker.com/repository/docker/felipeogutierrez/grpcservice) and [felipeogutierrez/httptogrpc](https://hub.docker.com/repository/docker/felipeogutierrez/httptogrpc) are available at Docker Hub. They are push automatically by Travis-CI when new code is committed to github.
