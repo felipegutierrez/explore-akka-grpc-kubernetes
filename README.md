@@ -5,6 +5,7 @@
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/felipegutierrez/explore-akka-grpc-kubernetes)
 ([felipeogutierrez/grpcservice](https://hub.docker.com/repository/docker/felipeogutierrez/grpcservice) -> ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/felipeogutierrez/grpcservice))
 ([felipeogutierrez/httptogrpc](https://hub.docker.com/repository/docker/felipeogutierrez/httptogrpc) -> ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/felipeogutierrez/httptogrpc))
+![Lines of code](https://img.shields.io/tokei/lines/github/felipegutierrez/explore-akka-grpc-kubernetes)
 
 # Akka gRPC Kubernetes
 
