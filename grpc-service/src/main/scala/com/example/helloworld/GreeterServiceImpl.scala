@@ -7,8 +7,7 @@ import akka.stream.scaladsl.{BroadcastHub, Keep, MergeHub, Sink, Source}
 
 import scala.concurrent.Future
 
-class GreeterServiceImpl(materializer: Materializer, log: LoggingAdapter) extends GreeterService {
-
+object GreeterServiceData {
   val mapHelloReply = Map(
     "Simone" -> "I have found a job to work with Scala =)",
     "Martin" -> "Scala 3 has been announced",
@@ -20,8 +19,13 @@ class GreeterServiceImpl(materializer: Materializer, log: LoggingAdapter) extend
     "Michael" -> "We are the Jacksons 5",
     "Oscar" -> "I am Oscar Wilde from England and I have written 'The picture of Dorian Gray'"
   )
+}
+
+class GreeterServiceImpl(materializer: Materializer, log: LoggingAdapter) extends GreeterService {
 
   private implicit val mat: Materializer = materializer
+
+  import GreeterServiceData._
 
   val (inboundHub: Sink[HelloRequest, NotUsed], outboundHub: Source[HelloReply, NotUsed]) =
     MergeHub.source[HelloRequest]

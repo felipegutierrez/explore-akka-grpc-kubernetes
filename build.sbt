@@ -6,6 +6,9 @@ scalaVersion := "2.12.7"
 lazy val akkaVersion = "2.6.11"
 lazy val discoveryVersion = "1.0.9"
 lazy val akkaHttpVersion = "10.2.2"
+lazy val scalaTestVersion = "3.2.0"
+lazy val junitVersion = "4.13"
+lazy val logbackVersion = "1.2.3"
 
 lazy val root = (project in file(".")).aggregate(httpToGrpc, grpcService)
 
@@ -29,7 +32,14 @@ lazy val httpToGrpc = (project in file("http-to-grpc"))
 
       "com.lightbend.akka.discovery" %% "akka-discovery-kubernetes-api" % discoveryVersion,
 
-      "ch.qos.logback" % "logback-classic" % "1.2.3",
+      // test libraries
+      "com.typesafe.akka" %% "akka-testkit" % akkaVersion,
+      "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % Test,
+      "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion,
+      "org.scalatest" %% "scalatest" % scalaTestVersion,
+      "junit" % "junit" % junitVersion % Test,
+
+      "ch.qos.logback" % "logback-classic" % logbackVersion,
     ),
     dockerExposedPorts := Seq(8080),
     version in Docker := "1.0",
@@ -55,7 +65,14 @@ lazy val grpcService = (project in file("grpc-service"))
       "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
       "com.typesafe.akka" %% "akka-http2-support" % akkaHttpVersion,
 
-      "ch.qos.logback" % "logback-classic" % "1.2.3",
+      // test libraries
+      "com.typesafe.akka" %% "akka-testkit" % akkaVersion,
+      "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % Test,
+      "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion,
+      "org.scalatest" %% "scalatest" % scalaTestVersion,
+      "junit" % "junit" % junitVersion % Test,
+
+      "ch.qos.logback" % "logback-classic" % logbackVersion,
     ),
     dockerExposedPorts := Seq(8080),
     version in Docker := "1.0",
