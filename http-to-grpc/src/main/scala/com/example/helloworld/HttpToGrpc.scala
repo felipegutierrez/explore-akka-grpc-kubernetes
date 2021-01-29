@@ -61,14 +61,60 @@ object HttpToGrpc {
       |</html>
     """.stripMargin
 
-  def main(args: Array[String]): Unit = {
-    implicit val system: ActorSystem = ActorSystem("HttpToGrpc")
-    implicit val mat: Materializer = Materializer(system)
-    implicit val ec: ExecutionContext = system.dispatcher
-    val log: LoggingAdapter = system.log
+  implicit val system: ActorSystem = ActorSystem("HttpToGrpc")
+  implicit val mat: Materializer = Materializer(system)
+  implicit val ec: ExecutionContext = system.dispatcher
+  val log: LoggingAdapter = system.log
 
-    val settings = GrpcClientSettings.fromConfig("helloworld.GreeterService")
-    val client = GreeterServiceClient(settings)
+  val settings = GrpcClientSettings.fromConfig("helloworld.GreeterService")
+  val client = GreeterServiceClient(settings)
+
+  // dynamic web socket flow to update html without refreshing the page
+  val dynamicSource = Source(Stream.from(1)).throttle(1, 1 second)
+    .map { _ =>
+      val helloRequest: HelloRequest = socialRequests(Random.nextInt(socialRequests.size))
+      log.info(s"Scheduled say hello to ${helloRequest.name}")
+      val responseClientGrpc: Future[HelloReply] = client.sayHello(helloRequest)
+      val message: Future[Message] = responseClientGrpc.map { helloReply: HelloReply =>
+        log.info(s"Scheduled ${helloRequest.name} say hello response: ${helloReply.message}")
+        TextMessage(s"${helloRequest.name} says: ${helloReply.message}")
+      }
+      Try(Await.result(message, 3 seconds)) match {
+        case Success(value) => value
+        case Failure(exception) => TextMessage(exception.getMessage)
+        case _ => TextMessage("Unknown message")
+      }
+    }
+  val socketFlow: Flow[Message, Message, Any] = Flow
+    .fromSinkAndSource(Sink.foreach[Message](println), dynamicSource)
+
+  val routes =
+    path("hello" / Segment) { name =>
+      get {
+        log.info("hello request")
+        onComplete(client.sayHello(HelloRequest(name))) {
+          case Success(reply) => complete(reply.message)
+          case Failure(t) =>
+            log.error(t, "Request failed")
+            complete(StatusCodes.InternalServerError, t.getMessage)
+        }
+      }
+    } ~ (path("api" / "web" / "socket")) {
+      get {
+        complete(
+          HttpEntity(
+            ContentTypes.`text/html(UTF-8)`,
+            html
+          )
+        )
+      } ~ {
+        complete(StatusCodes.Forbidden)
+      }
+    } ~ path("api" / "socket") {
+      handleWebSocketMessages(socketFlow)
+    }
+
+  def main(args: Array[String]): Unit = {
 
     system.scheduler.scheduleAtFixedRate(5.seconds, 5.seconds)(() => {
       val helloRequest: HelloRequest = socialRequests(Random.nextInt(socialRequests.size))
@@ -80,48 +126,7 @@ object HttpToGrpc {
       }
     })
 
-    // dynamic web socket flow to update html without refreshing the page
-    val dynamicSource = Source(Stream.from(1)).throttle(1, 1 second)
-      .map { _ =>
-        val helloRequest: HelloRequest = socialRequests(Random.nextInt(socialRequests.size))
-        log.info(s"Scheduled say hello to ${helloRequest.name}")
-        val responseClientGrpc: Future[HelloReply] = client.sayHello(helloRequest)
-        val message: Future[Message] = responseClientGrpc.map { helloReply: HelloReply =>
-          log.info(s"Scheduled ${helloRequest.name} say hello response: ${helloReply.message}")
-          TextMessage(s"${helloRequest.name} says: ${helloReply.message}")
-        }
-        Try(Await.result(message, 3 seconds)) match {
-          case Success(value) => value
-          case Failure(exception) => TextMessage(exception.getMessage)
-          case _ => TextMessage("Unknown message")
-        }
-      }
-    val socketFlow: Flow[Message, Message, Any] = Flow
-      .fromSinkAndSource(Sink.foreach[Message](println), dynamicSource)
-
-    val route =
-      path("hello" / Segment) { name =>
-        get {
-          log.info("hello request")
-          onComplete(client.sayHello(HelloRequest(name))) {
-            case Success(reply) => complete(reply.message)
-            case Failure(t) =>
-              log.error(t, "Request failed")
-              complete(StatusCodes.InternalServerError, t.getMessage)
-          }
-        }
-      } ~ (path("api" / "web" / "socket") & get) {
-        complete(
-          HttpEntity(
-            ContentTypes.`text/html(UTF-8)`,
-            html
-          )
-        )
-      } ~ path("api" / "socket") {
-        handleWebSocketMessages(socketFlow)
-      }
-
-    val bindingFuture = Http().newServerAt("0.0.0.0", 8080).bindFlow(route)
+    val bindingFuture = Http().newServerAt("0.0.0.0", 8080).bindFlow(routes)
 
     bindingFuture.onComplete {
       case Success(sb) =>

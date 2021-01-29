@@ -64,7 +64,6 @@ class GreeterServiceImplSpec extends TestKit(ActorSystem("GreeterServiceImplSpec
 
   implicit val patience: PatienceConfig = PatienceConfig(scaled(5.seconds), scaled(100.millis))
 
-  // val testKit = ActorTestKit(conf)
   val serverSystem: ActorSystem = system
   val bound = new GreeterServer(serverSystem).run()
 
