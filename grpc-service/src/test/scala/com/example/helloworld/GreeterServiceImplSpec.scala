@@ -1,10 +1,10 @@
 package com.example.helloworld
 
+import akka.NotUsed
 import akka.actor.ActorSystem
 import akka.grpc.GrpcClientSettings
-import akka.stream.scaladsl.Source
+import akka.stream.scaladsl.{Keep, Sink, Source}
 import akka.testkit.TestKit
-import akka.{Done, NotUsed}
 import com.typesafe.config.ConfigFactory
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.concurrent.ScalaFutures
@@ -114,9 +114,17 @@ class GreeterServiceImplSpec extends TestKit(ActorSystem("GreeterServiceImplSpec
       val requestStream: Source[HelloRequest, NotUsed] = Source(names).map(name => HelloRequest(name))
       val responseStream: Source[HelloReply, NotUsed] = client.sayHelloToAll(requestStream)
 
-      val done: Future[Done] = responseStream.runForeach { reply: HelloReply =>
-        // println(s"got streaming reply: ${reply.message}")
-        assert(expectedReplySeq.contains(reply))
+      //      val done: Future[Done] = responseStream.runForeach { reply: HelloReply =>
+      //        // println(s"got streaming reply: ${reply.message}")
+      //        assert(expectedReplySeq.contains(reply))
+      //      }
+      val sinkHelloReply = Sink.foreach[HelloReply] { e =>
+        println(s"element: $e")
+        assert(expectedReplySeq.contains(e))
+      }
+      responseStream.toMat(sinkHelloReply)(Keep.right).run().onComplete {
+        case Success(value) => println(s"done")
+        case Failure(exception) => println(s"exception $exception")
       }
     }
   }
