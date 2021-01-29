@@ -27,11 +27,12 @@ class GreeterServiceImpl(materializer: Materializer, log: LoggingAdapter) extend
 
   import GreeterServiceData._
 
-  val (inboundHub: Sink[HelloRequest, NotUsed], outboundHub: Source[HelloReply, NotUsed]) =
-    MergeHub.source[HelloRequest]
-      .map(request => HelloReply(s"Hello ${request.name} -> ${mapHelloReply.getOrElse(request.name, "this person does not exist =(")}"))
+  val (inboundHub: Sink[HelloRequest, NotUsed], outboundHub: Source[HelloReply, NotUsed]) = {
+    MergeHub.source[HelloRequest].log("source.outboundHub")
+      .map(request => HelloReply(s"Hello, ${request.name} -> ${mapHelloReply.getOrElse(request.name, "this person does not exist =(")}")).log("map.outboundHub")
       .toMat(BroadcastHub.sink[HelloReply])(Keep.both)
       .run()
+  }
 
   override def sayHello(request: HelloRequest): Future[HelloReply] = {
     log.info("sayHello {}", request)
@@ -41,6 +42,7 @@ class GreeterServiceImpl(materializer: Materializer, log: LoggingAdapter) extend
   override def sayHelloToAll(in: Source[HelloRequest, NotUsed]): Source[HelloReply, NotUsed] = {
     log.info("sayHelloToAll")
     in.runWith(inboundHub)
+    log.info("sayHelloToAll running")
     outboundHub
   }
 }

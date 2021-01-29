@@ -2,15 +2,18 @@ package com.example.helloworld
 
 import akka.actor.ActorSystem
 import akka.grpc.GrpcClientSettings
+import akka.stream.scaladsl.Source
 import akka.testkit.TestKit
+import akka.{Done, NotUsed}
 import com.typesafe.config.ConfigFactory
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
-import scala.concurrent.Await
+import scala.collection._
 import scala.concurrent.duration._
+import scala.concurrent.{Await, Future}
 import scala.util.{Failure, Success}
 
 object GreeterServiceConf {
@@ -84,12 +87,12 @@ class GreeterServiceImplSpec extends TestKit(ActorSystem("GreeterServiceImplSpec
   "GreeterService" should {
     "reply to single request" in {
       import GreeterServiceData._
-      val name = "John"
-      val reply = client.sayHello(HelloRequest(name))
-      val helloReply = HelloReply(s"Hello, $name -> ${mapHelloReply.getOrElse(name, "this person does not exist =(")}")
-
       import system.dispatcher
 
+      val name = "John"
+      val expectedReply = HelloReply(s"Hello, $name -> ${mapHelloReply.getOrElse(name, "this person does not exist =(")}")
+
+      val reply: Future[HelloReply] = client.sayHello(HelloRequest(name))
       Await.result(reply, 2 seconds)
       reply.onComplete {
         case Success(value) =>
@@ -97,7 +100,25 @@ class GreeterServiceImplSpec extends TestKit(ActorSystem("GreeterServiceImplSpec
         case Failure(exception) =>
           println(s"failure $exception")
       }
-      reply.futureValue should ===(helloReply)
+      reply.futureValue should ===(expectedReply)
+    }
+    "reply to multiple requests" in {
+      import GreeterServiceData._
+      import system.dispatcher
+
+      val names = List("John", "Martin", "Michael", "UnknownPerson")
+      val expectedReplySeq: immutable.Seq[HelloReply] = names.map { name =>
+        HelloReply(s"Hello, $name -> ${mapHelloReply.getOrElse(name, "this person does not exist =(")}")
+      }
+      // println(s"expectedReplySeq: ${expectedReplySeq.foreach(println)}")
+
+      val requestStream: Source[HelloRequest, NotUsed] = Source(names).map(name => HelloRequest(name))
+      val responseStream: Source[HelloReply, NotUsed] = client.sayHelloToAll(requestStream)
+
+      val done: Future[Done] = responseStream.runForeach { reply: HelloReply =>
+        // println(s"got streaming reply: ${reply.message}")
+        assert(expectedReplySeq.contains(reply))
+      }
     }
   }
 }
