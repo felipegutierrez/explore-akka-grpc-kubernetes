@@ -1,6 +1,7 @@
 
 [![Build Status](https://travis-ci.com/felipegutierrez/explore-akka-grpc-kubernetes.svg?branch=master)](https://travis-ci.com/felipegutierrez/explore-akka-grpc-kubernetes)
 [![Coverage Status](https://coveralls.io/repos/github/felipegutierrez/explore-akka-grpc-kubernetes/badge.svg?branch=master)](https://coveralls.io/github/felipegutierrez/explore-akka-grpc-kubernetes?branch=master)
+[![CodeFactor](https://www.codefactor.io/repository/github/felipegutierrez/explore-akka-grpc-kubernetes/badge)](https://www.codefactor.io/repository/github/felipegutierrez/explore-akka-grpc-kubernetes)
 ![GitHub issues](https://img.shields.io/github/issues-raw/felipegutierrez/explore-akka-grpc-kubernetes)
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/felipegutierrez/explore-akka-grpc-kubernetes)
 ![Lines of code](https://img.shields.io/tokei/lines/github/felipegutierrez/explore-akka-grpc-kubernetes)
