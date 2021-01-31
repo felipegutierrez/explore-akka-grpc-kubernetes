@@ -1,8 +1,8 @@
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/321d2b735989493ab00ab602cdcf34ef)](https://app.codacy.com/gh/felipegutierrez/explore-akka-grpc-kubernetes?utm_source=github.com&utm_medium=referral&utm_content=felipegutierrez/explore-akka-grpc-kubernetes&utm_campaign=Badge_Grade)
 [![Build Status](https://travis-ci.com/felipegutierrez/explore-akka-grpc-kubernetes.svg?branch=master)](https://travis-ci.com/felipegutierrez/explore-akka-grpc-kubernetes)
 [![Coverage Status](https://coveralls.io/repos/github/felipegutierrez/explore-akka-grpc-kubernetes/badge.svg?branch=master)](https://coveralls.io/github/felipegutierrez/explore-akka-grpc-kubernetes?branch=master)
 [![CodeFactor](https://www.codefactor.io/repository/github/felipegutierrez/explore-akka-grpc-kubernetes/badge)](https://www.codefactor.io/repository/github/felipegutierrez/explore-akka-grpc-kubernetes)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/321d2b735989493ab00ab602cdcf34ef)](https://app.codacy.com/gh/felipegutierrez/explore-akka-grpc-kubernetes?utm_source=github.com&utm_medium=referral&utm_content=felipegutierrez/explore-akka-grpc-kubernetes&utm_campaign=Badge_Grade)
 ![GitHub issues](https://img.shields.io/github/issues-raw/felipegutierrez/explore-akka-grpc-kubernetes)
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/felipegutierrez/explore-akka-grpc-kubernetes)
 ![Lines of code](https://img.shields.io/tokei/lines/github/felipegutierrez/explore-akka-grpc-kubernetes)
